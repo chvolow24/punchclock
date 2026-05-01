@@ -1,0 +1,1 @@
+SELECT * FROM JOBS WHERE job_id = ?;
