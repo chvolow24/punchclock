@@ -7,9 +7,11 @@
     <!-- <link rel="stylesheet" href="css/style.css"> -->
   </head>
   <body>
-    <h3>Job</h3>
-    {% for key, value in job.items() %}
-    <p>{{ key }} : {{ value }}</p>
-    {% endfor %}
+    <div style="margin-left: 8vw">
+      <h3>Job</h3>
+      {% for key, value in job.items() %}
+      <p>{{ key }} : {{ value }}</p>
+      {% endfor %}
+    </div>
   </body>
 </html>

@@ -10,4 +10,3 @@ SELECT
 	, a.punch_out_ts IS NULL AS next_punch_type
 FROM tmp a
 LEFT JOIN jobs b on b.job_id = a.job_id
-

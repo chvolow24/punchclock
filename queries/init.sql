@@ -15,7 +15,6 @@ time_blocks(
 	, block_dur_hours REAL GENERATED ALWAYS AS (
 		(unixepoch(punch_out_ts) - unixepoch(punch_in_ts)) / 3600.0
 		) VIRTUAL
-
 	, FOREIGN KEY(job_id) REFERENCES jobs(job_id)
 );
 

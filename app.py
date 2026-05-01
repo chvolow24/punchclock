@@ -1,7 +1,7 @@
-from flask import Flask, render_template, redirect, make_response
-
-import utils
+from flask import Flask, render_template, redirect, make_response, Response
 import database
+import csv
+import io
 
 app = Flask(__name__)
 
@@ -13,7 +13,29 @@ def route_job(job_id):
 @app.route("/job/<job_id>/time_blocks")
 def route_job_time_blocks(job_id):
     blocks = database.get_all_time_blocks_for_job(job_id)
-    return render_template("time_blocks.html", blocks=blocks)
+    return render_template("time_blocks.html", job_id=job_id, blocks=blocks)
+
+@app.route("/time_blocks_all_write_csv")
+def route_time_blocks_all_csv():
+    blocks = database.get_all_time_blocks()
+
+    output = io.StringIO()
+
+    keys = blocks[0].keys()
+    writer = csv.DictWriter(output, fieldnames=keys)
+
+    writer.writeheader()
+
+    for row in blocks:
+        writer.writerow(dict(row))
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={
+            "Content-Disposition": "attachment; filename=time_blocks_all.csv"
+        }
+    )
 
 @app.route("/job/<job_id>/punchclock/submit", methods=["POST"])
 def route_punchclock_submit(job_id):

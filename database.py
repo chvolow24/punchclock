@@ -1,19 +1,32 @@
 import sqlite3
 import utils
 
+def db_connect():
+    utils.read_dotenv()
+    try:
+        db_file = utils.get_env("PUNCHCLOCK_DB_FILENAME")
+    except KeyError:
+        raise KeyError("Environment variable \"PUNCHCLOCK_DB_FILENAME\" must be set.")
+    try:
+        conn = sqlite3.connect(db_file)
+    except Exception:
+        raise ValueError(f"Unable to connect to database at \"{db_file}\"")
+    return conn
 
 def init() -> str:
     query = utils.load_file_string("queries/init.sql")
-    conn = sqlite3.connect("queries/test.db")
+    conn = db_connect()
     try:
         conn.executescript(query)
     except Exception as e:
+        conn.close()
         return f"<p>Error: {str(e)}</p>"
+    conn.close()
     return "Initialized OK"
 
 def get_status(job_id: int) -> dict:
     query = utils.load_file_string("queries/status.sql")
-    conn = sqlite3.connect("queries/test.db")
+    conn = db_connect()
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(query, (job_id,))
@@ -22,9 +35,12 @@ def get_status(job_id: int) -> dict:
         ret: dict = {}
         ret["block_id"] = None
         ret["next_punch_type"] = 0
+        conn.close()
         return ret
     if len(rows) > 1:
+        conn.close()
         raise ValueError('Multiple time blocks unclosed')
+    conn.close()
     return dict(rows[0])
 
 def register_punch(job_id: int, block_id: int, punch_type: int) -> None:
@@ -36,35 +52,51 @@ def register_punch(job_id: int, block_id: int, punch_type: int) -> None:
     else:
         query = utils.load_file_string("queries/post_punch_out.sql")
         param = (block_id,)
-    conn = sqlite3.connect("queries/test.db")
+    conn = db_connect()
     cur = conn.cursor()
     cur.execute(query, param)
     conn.commit()
+    conn.close()
     
 
 def get_jobs() -> list:
     query = utils.load_file_string("queries/get_jobs.sql")
-    conn = sqlite3.connect("queries/test.db")
+    conn = db_connect()
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(query)
     rows = list(cur.fetchall())
+    conn.close()
     return rows
 
 def get_job(job_id: int) -> dict:
     query = utils.load_file_string("queries/get_job.sql")
-    conn = sqlite3.connect("queries/test.db")
+    conn = db_connect()
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(query, (job_id,))
     rows = list(cur.fetchall())
+    conn.close()
     return dict(rows[0])
     
 
 def get_all_time_blocks_for_job(job_id: int) -> list:
     query = utils.load_file_string("queries/get_all_for_job.sql")
-    conn = sqlite3.connect("queries/test.db")
+    conn = db_connect()
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute(query, (job_id,))
-    return list(cur.fetchall())
+    rows = list(cur.fetchall())
+    conn.close()
+    return rows
+
+def get_all_time_blocks() -> list:
+    query = utils.load_file_string("queries/get_all_time_blocks.sql")
+    conn = db_connect()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute(query)
+    rows = list(cur.fetchall())
+    conn.close()
+    return rows
+

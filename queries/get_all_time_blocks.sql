@@ -1,6 +1,11 @@
 SELECT
 	block_id
+	, job_id
+	, punch_in_ts
+	, punch_out_ts
 	, datetime(punch_in_ts, "localtime") as punch_in_localtime
 	, datetime(punch_out_ts, "localtime") as punch_out_localtime
+	, backed_up_ts
+	, submitted_ts
 	, block_dur_hours
-FROM time_blocks WHERE job_id = ?;
+FROM time_blocks
