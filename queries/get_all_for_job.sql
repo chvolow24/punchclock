@@ -2,5 +2,6 @@ SELECT
 	block_id
 	, datetime(punch_in_ts, "localtime") as punch_in_localtime
 	, datetime(punch_out_ts, "localtime") as punch_out_localtime
-	, block_dur_hours
+	, (unixepoch(punch_out_ts) - unixepoch(punch_in_ts)) / 3600.0
+        AS block_dur_hours
 FROM time_blocks WHERE job_id = ?;

@@ -2,8 +2,13 @@ from flask import Flask, render_template, redirect, make_response, Response
 import database
 import csv
 import io
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 @app.route("/job/<job_id>")
 def route_job(job_id):
