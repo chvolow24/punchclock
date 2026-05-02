@@ -13,7 +13,7 @@ time_blocks(
     , backed_up_ts TEXT
     , submitted_ts TEXT
 	-- , block_dur_hours REAL GENERATED ALWAYS AS (
-	-- 	(unixepoch(punch_out_ts) - unixepoch(punch_in_ts)) / 3600.0
+	-- 	(strftime("%s", punch_out_ts) - strftime("%s", punch_in_ts)) / 3600.0
 	-- 	) VIRTUAL
 	, FOREIGN KEY(job_id) REFERENCES jobs(job_id)
 );
