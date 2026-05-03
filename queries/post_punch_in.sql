@@ -5,4 +5,6 @@ INSERT INTO time_blocks VALUES(
 	, ?    -- PARAM 0: job id
 	, NULL --		   (backed up ts)
 	, NULL --		   (submitted ts)
+	, NULL --		   (punch in ts original)
+	, NULL --		   (punch out ts original)
 );
