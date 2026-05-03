@@ -109,4 +109,9 @@ def route_index():
 @app.route("/init")
 def route_init():
     return database.init()
+
+@app.route("/delete_job/<job_id>")
+def route_delete_job(job_id):
+    database.delete_job(job_id)
+    return redirect("/")
     

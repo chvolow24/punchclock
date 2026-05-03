@@ -1,1 +1,1 @@
-SELECT * FROM jobs;
+SELECT * FROM jobs WHERE deleted = 0;

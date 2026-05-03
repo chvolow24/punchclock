@@ -130,5 +130,13 @@ def add_job(job_name, init_pay_rate) -> None:
     cur.execute(query, params)
     conn.commit()
     conn.close()
-    
+
+def delete_job(job_id) -> None:
+    query = utils.load_file_string("queries/delete_job.sql")
+    conn = db_connect()
+    cur = conn.cursor()
+    params = (job_id,)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
 

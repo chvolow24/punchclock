@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS
 jobs(
 	job_id INTEGER PRIMARY KEY
 	, job_name TEXT
+	, deleted INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS
@@ -31,8 +32,8 @@ job_pay_rates(
 );
 
 INSERT OR IGNORE INTO jobs VALUES
-	(0, "Test Job 1")
-	, (1, "Test Job 2")
+	(0, "Test Job 1", 0)
+	, (1, "Test Job 2", 0)
 ;
 
 INSERT OR IGNORE INTO job_pay_rates VALUES

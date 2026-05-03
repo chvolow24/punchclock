@@ -5,7 +5,7 @@
 {% block page %}
 <h3>Select a job:</h3>
 {% for job in jobs %}
-<h4><a href="/job/{{ job.job_id }}/punchclock">{{ job.job_name }}</a></h4>
+<div class="row"><h3><a href="/job/{{ job.job_id }}/punchclock">{{ job.job_name }}</a></h3>   |   <a style="font-size: 14" href="/delete_job/{{ job.job_id }}">Delete</a></div>
 {% endfor %}
 <p>----</p>
 <h4><a href="/add_job">Add new job</a></h4>
