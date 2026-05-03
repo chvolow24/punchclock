@@ -1,7 +1,8 @@
-from flask import Flask, render_template, redirect, make_response, Response
+from flask import Flask, render_template, redirect, make_response, Response, request
 import database
 import csv
 import io
+import utils
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
@@ -15,9 +16,22 @@ app.wsgi_app = ProxyFix(
 #     job = database.get_job(job_id)
 #     return render_template("job.html", job=job)
 
+@app.route("/edit_timeblock/<block_id>/submit", methods=["POST"])
+def route_edit_timeblock_submit(block_id):
+    new_in_ts_local = utils.datetime_html_to_sqlite(request.form.get("punch_in_ts_local"))
+    new_out_ts_local = utils.datetime_html_to_sqlite(request.form.get("punch_out_ts_local"))
+    database.put_update_time_block(block_id, new_in_ts_local, new_out_ts_local)
+    job_id = request.form.get("job_id")
+    return redirect(f"/job/{job_id}/time_blocks")
+
 @app.route("/edit_timeblock/<block_id>")
-def route_block(block_id):
+def route_edit_timeblock(block_id):
     block = database.get_block(block_id)
+    block["in_ts_editable"] = utils.datetime_sqlite_to_html(block["punch_in_localtime"])
+    if block["punch_out_localtime"] is not None:
+        block["out_ts_editable"] = utils.datetime_sqlite_to_html(block["punch_out_localtime"])
+    else:
+        block["out_ts_editable"] = "2026-01-01T00:00:00";
     return render_template("edit_timeblock.html", block=block)
 
 @app.route("/job/<job_id>/time_blocks")
@@ -27,7 +41,20 @@ def route_job_time_blocks(job_id):
     for block in blocks:
         if block["block_dur_hours"] is not None:
             block["block_dur_hours"] = format(block["block_dur_hours"], ".1f")
+        if block["pay_rate_hourly"] is not None:
+            block["pay_rate_hourly"] = format(block["pay_rate_hourly"], ".2f")
     return render_template("time_blocks.html", job_id=job_id, blocks=blocks)
+
+@app.route("/add_job_submit", methods=["POST"])
+def route_add_job_submit():
+    job_name = request.form.get("job_name")
+    init_pay_rate = request.form.get("init_pay_rate")
+    database.add_job(job_name, init_pay_rate)
+    return redirect("/")    
+
+@app.route("/add_job")
+def route_add_job():
+    return render_template("add_job.html")
 
 @app.route("/time_blocks_all_write_csv")
 def route_time_blocks_all_csv():
@@ -53,11 +80,11 @@ def route_punchclock_submit(job_id):
     status = database.get_status(job_id)
     if status["next_punch_type"] == 0:
         # punch in
-        database.register_punch(job_id, None, 0)
+        database.post_punch(job_id, None, 0)
         return redirect(f"/job/{job_id}/time_blocks")
     elif status["next_punch_type"] == 1:
         # punch out
-        database.register_punch(job_id, status["block_id"], 1)
+        database.post_punch(job_id, status["block_id"], 1)
         return redirect(f"/job/{job_id}/time_blocks")
     else:
         return f"<p>Error: 'next punch type' is {status['next_punch_type']}</p>"

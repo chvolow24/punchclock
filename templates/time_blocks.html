@@ -10,6 +10,7 @@
     <th>Punch in ts (local)</th>
     <th>Punch out ts (local)</th>
     <th>Dur hours</th>
+    <th>Hourly rate ($)</th>
     <th></th>
   </tr>
   {% for block in blocks %}
@@ -18,6 +19,7 @@
     <td>{{ block.punch_in_localtime }}</td>
     <td>{{ block.punch_out_localtime }}</td>
     <td>{{ block.block_dur_hours }}</td>
+    <td>{{ block.pay_rate_hourly }}</td>
     <td><a href="/edit_timeblock/{{ block.block_id  }}">Edit</td>
   </tr>
   {% endfor %}

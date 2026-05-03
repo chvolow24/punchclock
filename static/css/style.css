@@ -54,7 +54,9 @@ a {
     height: 10vw;
     font-size: 30px;
     font-weight: bold;
+    border: 1px solid black;
     border-radius: 20px;
+    text-color: black;    
 }
 
 table {
@@ -93,4 +95,16 @@ tfoot th {
 
 tfoot td {
   font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+form label {
+    display: block;
+    margin-bottom: 20px;
 }

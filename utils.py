@@ -20,3 +20,10 @@ def read_dotenv():
             
 def get_env(key):
     return environ[key]
+
+def datetime_sqlite_to_html(sqlite_datetime: str) -> str:
+    return sqlite_datetime.replace(" ", "T")
+
+def datetime_html_to_sqlite(html_datetime: str) -> str:
+    return html_datetime.replace("T", " ")
+    

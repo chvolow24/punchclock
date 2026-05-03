@@ -43,7 +43,7 @@ def get_status(job_id: int) -> dict:
     conn.close()
     return dict(rows[0])
 
-def register_punch(job_id: int, block_id: int, punch_type: int) -> None:
+def post_punch(job_id: int, block_id: int, punch_type: int) -> None:
     query = ""
     param: tuple[int, ...] = ()
     if punch_type == 0:
@@ -57,8 +57,17 @@ def register_punch(job_id: int, block_id: int, punch_type: int) -> None:
     cur.execute(query, param)
     conn.commit()
     conn.close()
-    
 
+def put_update_time_block(block_id: int, new_in_ts_local: str, new_out_ts_local: str) -> None:
+    query = utils.load_file_string("queries/update_time_block.sql")
+    conn = db_connect()
+    cur = conn.cursor()
+    params = (new_in_ts_local, new_out_ts_local, block_id)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
+
+    
 def get_jobs() -> list:
     query = utils.load_file_string("queries/get_jobs.sql")
     conn = db_connect()
@@ -89,7 +98,6 @@ def get_block(block_id: int) ->dict:
     conn.close()
     return dict(rows[0])
     
-    
 
 def get_all_time_blocks_for_job(job_id: int) -> list:
     query = utils.load_file_string("queries/get_all_for_job.sql")
@@ -110,4 +118,17 @@ def get_all_time_blocks() -> list:
     rows = list(cur.fetchall())
     conn.close()
     return rows
+
+def add_job(job_name, init_pay_rate) -> None:
+    query = utils.load_file_string("queries/add_job.sql")
+    conn = db_connect()
+    cur = conn.cursor()
+    params = (job_name,)
+    cur.execute(query, params)
+    query = utils.load_file_string("queries/add_pay_rate_for_new_job.sql");
+    params = (init_pay_rate,)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
+    
 

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Punchclock | Edit time block{% endblock %}
+{% block page %}
+<form method="POST" action="/edit_timeblock/{{ block.block_id }}/submit">
+  <input
+    type="datetime-local"
+    id="punch_in_ts_local"
+    name="punch_in_ts_local"
+    value="{{ block.in_ts_editable }}">
+  </input>
+  <label for="punch_in_ts_local">Punch in (localtime)</label>
+  <input
+    type="datetime-local"
+    id="punch_out_ts_local"
+    name="punch_out_ts_local"
+    value="{{ block.out_ts_editable }}">
+  </input>
+  <label for="punch_out_ts_local">Punch out (localtime)</label>
+  <input
+    type="hidden"
+    id="job_id"
+    name="job_id"
+    value="{{ block.job_id }}">
+  <input type="submit"></input>
+</form>
+
+{% endblock %}

@@ -15,6 +15,8 @@ time_blocks(
 	-- , block_dur_hours REAL GENERATED ALWAYS AS (
 	-- 	(strftime("%s", punch_out_ts) - strftime("%s", punch_in_ts)) / 3600.0
 	-- 	) VIRTUAL
+	, punch_in_ts_original TEXT
+	, punch_out_ts_original TEXT
 	, FOREIGN KEY(job_id) REFERENCES jobs(job_id)
 );
 
@@ -34,6 +36,7 @@ INSERT OR IGNORE INTO jobs VALUES
 ;
 
 INSERT OR IGNORE INTO job_pay_rates VALUES
-	(0, 0, 16.0, "2026-01-01", NULL)
-	, (1, 1, 20.0, "2026-01-01", NULL)
+	(0, 0, 16.0, "2026-01-01", "2026-05-02")
+	, (1, 0, 25, "2026-05-02", NULL)
+	, (2, 1, 20.0, "2026-01-01", NULL)
 ;
