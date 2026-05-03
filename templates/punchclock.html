@@ -1,17 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
-  </head>
-  <body>
-    <div style="margin-left: 8vw">
-      <h3>Job: {{ job.job_name }}</h3>
-      <form method="POST" action="/job/{{ job.job_id }}/punchclock/submit">
-	<input type="submit" value={{ "IN" if status.next_punch_type == 0 else "OUT" }} style="width:200px; height:100px;"></input>	
-      </form>
-    </div>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Punchclock{% endblock %}
+{% block page %}
+<div class="content_centered_column">
+  <h3>Job: {{ job.job_name }}</h3>
+  <form method="POST" action="/job/{{ job.job_id }}/punchclock/submit">
+    <input
+      class="punchbutton"
+      type="submit"
+      value={{ "IN" if status.next_punch_type == 0 else "OUT" }}
+      style="background-color: {{'springgreen' if status.next_punch_type == 1 else 'tomato'}};">
+    </input>
+  </form>
+</div>
+<script>
+window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
+</script>
+{% endblock %}

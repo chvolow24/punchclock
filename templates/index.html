@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Punchclock | Select job</title>
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
-  </head>
-  <body>
-    <div style="margin-left: 8vw">
-      <h3>Select a job:</h3>
-      {% for job in jobs %}
-      <h4><a href="/job/{{ job.job_id }}/punchclock">{{ job.job_name }}</a></h4>
-      {% endfor %}
-    </div>
-  </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Punchclock | Select job{% endblock %}
+
+{% block page %}
+<h3>Select a job:</h3>
+{% for job in jobs %}
+<h4><a href="/job/{{ job.job_id }}/punchclock">{{ job.job_name }}</a></h4>
+{% endfor %}
+{% endblock %}

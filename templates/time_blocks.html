@@ -1,75 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <style>
-table {
-  border-collapse: collapse;
-  border: 2px solid rgb(140 140 140);
-  font-family: sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-}
-
-caption {
-  caption-side: bottom;
-  padding: 10px;
-  font-weight: bold;
-}
-
-thead,
-tfoot {
-  background-color: rgb(228 240 245);
-}
-
-th,
-td {
-  border: 1px solid rgb(160 160 160);
-  padding: 8px 10px;
-}
-
-td:last-of-type {
-  text-align: center;
-}
-
-tbody > tr:nth-of-type(even) {
-  background-color: rgb(237 238 242);
-}
-
-tfoot th {
-  text-align: right;
-}
-
-tfoot td {
-  font-weight: bold;
-}
-    </style>
-  </head>
-  <body>
-    <div style="margin-left: 8vw">
-      <table>
-	<caption>
-	  Time recorded for job id {{ job_id }}
-	</caption>
-	<tr>
-	  <th>Block ID</th>
-	  <th>Punch in ts (local)</th>
-	  <th>Punch out ts (local)</th>
-	  <th>Dur hours</th>	  
-	</tr>
-	{% for block in blocks %}
-	<tr>
-	  <td>{{ block.block_id }}</td>
-	  <td>{{ block.punch_in_localtime }}</td>
-	  <td>{{ block.punch_out_localtime }}</td>
-	  <td>{{ block.block_dur_hours }}</td>
-	</tr>
-      {% endfor %}
-      </table>
-      <a href="/time_blocks_all_write_csv">Download csv</a>
-    </div>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Punchclock | Time blocks{% endblock %}
+{% block page %}
+<table>
+  <caption>
+    Time recorded for job id {{ job_id }}
+  </caption>
+  <tr>
+    <th>Block ID</th>
+    <th>Punch in ts (local)</th>
+    <th>Punch out ts (local)</th>
+    <th>Dur hours</th>
+    <th></th>
+  </tr>
+  {% for block in blocks %}
+  <tr>
+    <td>{{ block.block_id }}</td>
+    <td>{{ block.punch_in_localtime }}</td>
+    <td>{{ block.punch_out_localtime }}</td>
+    <td>{{ block.block_dur_hours }}</td>
+    <td><a href="/edit_timeblock/{{ block.block_id  }}">Edit</td>
+  </tr>
+  {% endfor %}
+</table>
+<a href="/time_blocks_all_write_csv">Download csv</a>
+{% endblock %}

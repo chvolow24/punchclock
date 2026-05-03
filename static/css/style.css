@@ -1,0 +1,96 @@
+:root {
+    --banner_h: 50px;
+    --main_margin_left: 30px;
+    --inner_content_addtl_left: 20px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Courier New", monospace;
+}
+
+a {
+    text-decoration: none;
+}
+
+.banner a {
+    font-weight: bold;
+    font-color: black;
+    font-style: none;
+}
+
+.banner {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100vw;
+    height: var(--banner_h);
+    border-bottom: 1px solid black;
+    font-size: 24px;
+    background-color: rgb(255 200 120);
+
+    display: flex;
+    align-items: center;
+    padding-left: var(--main_margin_left);
+}
+
+.outer_content {
+    margin: 0px;
+    padding: 0px;
+}
+.inner_content {
+    margin-top: calc(20px + var(--banner_h));
+    margin-left: calc(var(--main_margin_left) + var(--inner_content_addtl_left));
+}
+
+.content_centered_column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.punchbutton {
+    width: 30vw;
+    height: 10vw;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+}
+
+caption {
+  caption-side: bottom;
+  padding: 10px;
+  font-weight: bold;
+}
+
+thead,
+tfoot {
+  background-color: rgb(228 240 245);
+}
+
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+}
+
+td:last-of-type {
+  text-align: center;
+}
+
+tbody > tr:nth-of-type(even) {
+  background-color: rgb(237 238 242);
+}
+
+tfoot th {
+  text-align: right;
+}
+
+tfoot td {
+  font-weight: bold;
+}

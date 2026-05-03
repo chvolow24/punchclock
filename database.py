@@ -78,6 +78,17 @@ def get_job(job_id: int) -> dict:
     rows = list(cur.fetchall())
     conn.close()
     return dict(rows[0])
+
+def get_block(block_id: int) ->dict:
+    query = utils.load_file_string("queries/get_block.sql")
+    conn = db_connect()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute(query, (block_id,))
+    rows = list(cur.fetchall())
+    conn.close()
+    return dict(rows[0])
+    
     
 
 def get_all_time_blocks_for_job(job_id: int) -> list:
