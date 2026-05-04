@@ -1,5 +1,6 @@
 import sqlite3
 import utils
+from typing import List, Dict
 
 def db_connect():
     utils.read_dotenv()
@@ -125,7 +126,7 @@ def add_job(job_name, init_pay_rate) -> None:
     cur = conn.cursor()
     params = (job_name,)
     cur.execute(query, params)
-    query = utils.load_file_string("queries/add_pay_rate_for_new_job.sql");
+    query = utils.load_file_string("queries/add_pay_rate_for_new_job.sql")
     params = (init_pay_rate,)
     cur.execute(query, params)
     conn.commit()
@@ -152,7 +153,7 @@ def undelete_job(job_id) -> None:
 
 
 
-def get_deleted_jobs() -> list[dict]:
+def get_deleted_jobs() -> List[Dict]:
     query = utils.load_file_string("queries/get_deleted_jobs.sql")
     conn = db_connect()
     conn.row_factory = sqlite3.Row
@@ -162,7 +163,7 @@ def get_deleted_jobs() -> list[dict]:
     conn.close()
     return rows
 
-def get_deleted_time_blocks(job_id) -> list[dict]:
+def get_deleted_time_blocks(job_id) -> List[Dict]:
     query = utils.load_file_string("queries/get_deleted_time_blocks.sql")
     conn = db_connect()
     conn.row_factory = sqlite3.Row
