@@ -18,6 +18,7 @@ time_blocks(
 	-- 	) VIRTUAL
 	, punch_in_ts_original TEXT
 	, punch_out_ts_original TEXT
+	, deleted INTEGER
 	, FOREIGN KEY(job_id) REFERENCES jobs(job_id)
 );
 

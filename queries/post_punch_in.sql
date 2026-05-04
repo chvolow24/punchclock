@@ -7,4 +7,5 @@ INSERT INTO time_blocks VALUES(
 	, NULL --		   (submitted ts)
 	, NULL --		   (punch in ts original)
 	, NULL --		   (punch out ts original)
+	, 0	   --		   (deleted)
 );

@@ -11,4 +11,4 @@ LEFT JOIN job_pay_rates p ON
 	AND p.effective <= t.punch_in_ts
 	AND (p.deprecated IS NULL OR p.deprecated > t.punch_out_ts)
 WHERE t.job_id = ?
-AND t.deleted = 0;
+AND t.deleted = 1;

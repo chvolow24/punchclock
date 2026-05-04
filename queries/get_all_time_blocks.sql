@@ -11,3 +11,4 @@ SELECT
         AS block_dur_hours
 	-- , block_dur_hours
 FROM time_blocks
+WHERE deleted = 0

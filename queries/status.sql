@@ -1,6 +1,7 @@
 WITH tmp AS (
 	SELECT * FROM time_blocks
 	WHERE job_id = ? -- PARAM 0: job_id
+	AND deleted = 0
 	ORDER BY punch_in_ts DESC
 	LIMIT 1
 )

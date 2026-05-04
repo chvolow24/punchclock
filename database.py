@@ -140,3 +140,55 @@ def delete_job(job_id) -> None:
     conn.commit()
     conn.close()
 
+    
+def undelete_job(job_id) -> None:
+    query = utils.load_file_string("queries/undelete_job.sql")
+    conn = db_connect()
+    cur = conn.cursor()
+    params = (job_id,)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
+
+
+
+def get_deleted_jobs() -> list[dict]:
+    query = utils.load_file_string("queries/get_deleted_jobs.sql")
+    conn = db_connect()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute(query)
+    rows = list(cur.fetchall())
+    conn.close()
+    return rows
+
+def get_deleted_time_blocks(job_id) -> list[dict]:
+    query = utils.load_file_string("queries/get_deleted_time_blocks.sql")
+    conn = db_connect()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    params = (job_id,)
+    cur.execute(query, params)
+    rows = list(cur.fetchall())
+    conn.close()
+    return rows
+    
+
+def delete_time_block(block_id: int) -> None:
+    query = utils.load_file_string("queries/delete_time_block.sql")
+    conn = db_connect()
+    cur = conn.cursor()
+    params = (block_id,)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
+
+def undelete_time_block(block_id: int) -> None:
+    query = utils.load_file_string("queries/undelete_time_block.sql")
+    conn = db_connect()
+    cur = conn.cursor()
+    params = (block_id,)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
+    

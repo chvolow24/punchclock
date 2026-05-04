@@ -1,10 +1,7 @@
 {% extends "base.html" %}
-{% block title %}Punchclock | Time blocks{% endblock %}
+{% block title %}Punchclock | Deleted time blocks{% endblock %}
 {% block page %}
 <table>
-  <caption>
-    Time recorded for job id {{ job_id }}
-  </caption>
   <tr>
     <th>Punch in ts (local)</th>
     <th>Punch out ts (local)</th>
@@ -20,12 +17,8 @@
     <td>{{ block.block_dur_hours }}</td>
     <td>{{ block.pay_rate_hourly }}</td>
     <td>{{ block.accrued }}</td>
-    <td><a href="/edit_timeblock/{{ block.block_id  }}">Edit</a> | <a href="/delete_time_block/{{ block.block_id }}">Delete</a></td>
-  </tr>
-  {% endfor %}
+    <td><a href="/undelete_time_block/{{ block.block_id }}"</a>Undelete</td>
+	   </tr>
+{% endfor %}
 </table>
-<p></p>
-<a href="/time_blocks_all_write_csv">Download csv</a>
-<p></p>
-<a href="/deleted_time_blocks/{{ job_id }}">View deleted time blocks</a>
 {% endblock %}

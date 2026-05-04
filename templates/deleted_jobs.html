@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Punchclock | Deleted jobs{% endblock %}
+
+{% block page %}
+<h3>Deleted jobs</h3>
+{% for job in jobs %}
+<div class="row"><h3><a href="/job/{{ job.job_id }}/punchclock">{{ job.job_name }}</a></h3>   |   <a style="font-size: 14" href="/undelete_job/{{ job.job_id }}">Un-delete</a></div>
+{% endfor %}
+{% endblock %}

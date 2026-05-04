@@ -12,7 +12,17 @@ body {
 
 a {
     text-decoration: none;
+    color: #003FAB;
 }
+
+a:visited {
+    color: #003FAB;
+}
+
+a:hover {
+    color: #AB4200;
+}
+
 
 .banner a {
     font-weight: bold;

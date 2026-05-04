@@ -1,5 +1,6 @@
 from os import environ
 from warnings import warn
+from datetime import datetime
 
 def load_file_string(filepath):
     filestr = ""
@@ -27,3 +28,9 @@ def datetime_sqlite_to_html(sqlite_datetime: str) -> str:
 def datetime_html_to_sqlite(html_datetime: str) -> str:
     return html_datetime.replace("T", " ")
     
+
+def datetime_sqlite_to_table_display(sqlite_datetime: str) ->str:
+    if sqlite_datetime is None:
+        return "None"
+    dt = datetime.strptime(sqlite_datetime, "%Y-%m-%d %H:%M:%S")
+    return datetime.strftime(dt, "%A, %m/%d/%y %H:%M")

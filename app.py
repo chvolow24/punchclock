@@ -31,7 +31,7 @@ def route_edit_timeblock(block_id):
     if block["punch_out_localtime"] is not None:
         block["out_ts_editable"] = utils.datetime_sqlite_to_html(block["punch_out_localtime"])
     else:
-        block["out_ts_editable"] = "2026-01-01T00:00:00";
+        block["out_ts_editable"] = "2026-01-01T00:00:00"
     return render_template("edit_timeblock.html", block=block)
 
 @app.route("/job/<job_id>/time_blocks")
@@ -39,10 +39,17 @@ def route_job_time_blocks(job_id):
     blocks = database.get_all_time_blocks_for_job(job_id)
     blocks = [dict(block) for block in database.get_all_time_blocks_for_job(job_id)]
     for block in blocks:
+        block["punch_in_localtime"] = utils.datetime_sqlite_to_table_display(block["punch_in_localtime"])
+        block["punch_out_localtime"] = utils.datetime_sqlite_to_table_display(block["punch_out_localtime"])
         if block["block_dur_hours"] is not None:
             block["block_dur_hours"] = format(block["block_dur_hours"], ".1f")
+            if block["pay_rate_hourly"] is not None:
+                accrued = float(block["block_dur_hours"]) * float(block["pay_rate_hourly"])
+                block["accrued"] = format(accrued, ".2f")
         if block["pay_rate_hourly"] is not None:
             block["pay_rate_hourly"] = format(block["pay_rate_hourly"], ".2f")
+
+            
     return render_template("time_blocks.html", job_id=job_id, blocks=blocks)
 
 @app.route("/add_job_submit", methods=["POST"])
@@ -81,7 +88,7 @@ def route_punchclock_submit(job_id):
     if status["next_punch_type"] == 0:
         # punch in
         database.post_punch(job_id, None, 0)
-        return redirect(f"/job/{job_id}/time_blocks")
+        return redirect(f"/job/{job_id}/punchclock")
     elif status["next_punch_type"] == 1:
         # punch out
         database.post_punch(job_id, status["block_id"], 1)
@@ -114,4 +121,32 @@ def route_init():
 def route_delete_job(job_id):
     database.delete_job(job_id)
     return redirect("/")
-    
+
+@app.route("/undelete_job/<job_id>")
+def route_undelete_job(job_id):
+    database.undelete_job(job_id)
+    return redirect("/deleted_jobs")
+
+@app.route("/deleted_jobs")
+def route_deleted_jobs():
+    jobs = database.get_deleted_jobs()
+    return render_template("deleted_jobs.html", jobs=jobs)
+
+@app.route("/deleted_time_blocks/<job_id>")
+def route_deleted_time_blocks(job_id):
+    deleted_blocks = database.get_deleted_time_blocks(job_id)
+    return render_template("deleted_time_blocks.html", blocks=deleted_blocks)
+
+@app.route("/delete_time_block/<block_id>")
+def route_delete_time_block(block_id):
+    database.delete_time_block(block_id)
+    block = database.get_block(block_id)
+    return redirect(f"/job/{block['job_id']}/time_blocks")
+
+@app.route("/undelete_time_block/<block_id>")
+def route_undelete_time_block(block_id):
+    database.undelete_time_block(block_id)
+    block = database.get_block(block_id)
+    return redirect(f"/deleted_time_blocks/{block['job_id']}")
+
+
