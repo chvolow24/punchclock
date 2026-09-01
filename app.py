@@ -42,7 +42,7 @@ def route_job_time_blocks(job_id):
         block["punch_in_localtime"] = utils.datetime_sqlite_to_table_display(block["punch_in_localtime"])
         block["punch_out_localtime"] = utils.datetime_sqlite_to_table_display(block["punch_out_localtime"])
         if block["block_dur_hours"] is not None:
-            block["block_dur_hours"] = format(block["block_dur_hours"], ".1f")
+            block["block_dur_hours"] = format(block["block_dur_hours"], ".2f")
             if block["pay_rate_hourly"] is not None:
                 accrued = float(block["block_dur_hours"]) * float(block["pay_rate_hourly"])
                 block["accrued"] = format(accrued, ".2f")
